@@ -35,7 +35,7 @@ const memberController = {
     actions () {
         const registerAccount = document.getElementById("collection-5ab4283a70a6ad6a9cade23f");
 
-        if (this.params.email && registerAccount) {
+        if (registerAccount && this.params.email) {
             Events.emit("query_params_found", this.params);
         }
     },

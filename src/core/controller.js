@@ -20,7 +20,7 @@ const memberController = {
      * @returns {Object}
      */
     init () {
-        this.params = this.getQueryParameters(location.search);
+        this.email = this.getQueryParametersByName("email");
         this.subscriptions();
         this.actions();
         return this;
@@ -35,8 +35,8 @@ const memberController = {
     actions () {
         const registerAccount = document.getElementById("collection-5ab4283a70a6ad6a9cade23f");
 
-        if (registerAccount && this.params.email) {
-            Events.emit("query_params_found", this.params);
+        if (registerAccount && this.email) {
+            Events.emit("query_params_found", this.email);
         }
     },
 
@@ -61,7 +61,7 @@ const memberController = {
             password.autocomplete = "off";
             email.auocomplete = "off";
             document.querySelector(".login_form.control").reset();
-            email.value = this.params.email;
+            email.value = this.email;
             password.value = "Z:_5gt!+q#XH";
             button.value = "Continue";
             button.classList.add("show");
@@ -76,13 +76,12 @@ const memberController = {
      * @memberOf memberController
      */
     checkIfSubscribed () {
-        const email = this.params.email;
         const subscribed = axiosInstance({
-            url: `/object_6/records?filters=[{"field":"field_307", "operator":"is", "value":"${email}"}]`,
+            url: `/object_6/records?filters=[{"field":"field_307", "operator":"is", "value":"${this.email}"}]`,
             method: "get"
         });
         const accountExists = axiosInstance({
-            url: `/object_17/records?filters=[{"field":"field_128", "operator":"is", "value":"${email}"}]`,
+            url: `/object_17/records?filters=[{"field":"field_128", "operator":"is", "value":"${this.email}"}]`,
             method: "get"
         });
 
@@ -129,7 +128,7 @@ const memberController = {
      * @memberOf memberController
      * @returns {String}
      */
-    getQueryParameters (name, url) {
+    getQueryParametersByName (name, url) {
         if (!url) {
             url = window.location.href;
         }

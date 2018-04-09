@@ -246,7 +246,7 @@ WEBPACK_CONFIG.plugins = plugins;
 const output = {
     output: {
         publicPath: '/',
-        path: __dirname + "/template/assets",
+        path: __dirname + "/dist",
         filename: "bundle.js"
     }
 };

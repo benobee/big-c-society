@@ -1,24 +1,33 @@
 import PubSub from "./pubsub";
-import axios from "axios";
 import KnackAPI from "./knackAPI";
 
 /**
  * creates the axios promise
  * @type {Promise}
  */
+
 const axiosInstance = KnackAPI.createInstance();
+
+/**
+ * Pub sub pattern event system
+ * @type {Object}
+ */
+
 const Events = new PubSub();
 
 /**
  * all methods, data related to members
  * @type {Object}
  */
+
 const memberController = {
+
     /**
      * Initialize the controller
      * @memberOf memberController
      * @returns {Object}
      */
+
     init () {
         this.email = this.getQueryParametersByName("email");
         this.subscriptions();
@@ -32,6 +41,7 @@ const memberController = {
      * pub sub event
      * @memberOf memberController
      */
+
     actions () {
         const registerAccount = document.getElementById("collection-5ab4283a70a6ad6a9cade23f");
 
@@ -45,15 +55,20 @@ const memberController = {
      * like this for organization.
      * @memberOf memberController
      */
+
     subscriptions () {
         Events.on("query_params_found", () => {
             // find a member in the database from query param email
             this.checkIfSubscribed();
         });
         Events.on("subscription_found", (data) => {
+            const knackContainer = document.querySelector("#knack-dist_5");
+
+            knackContainer.classList.add("subscription-found");
             this.updateMember(data.id, {
                 field_311: "ACTIVE_PAID"
             });
+
             const password = document.getElementById("password");
             const email = document.getElementById("email");
             const button = document.querySelector(".kn-button.is-primary");
@@ -75,20 +90,17 @@ const memberController = {
      * as if the account exists at all.
      * @memberOf memberController
      */
+
     checkIfSubscribed () {
-        const subscribed = axiosInstance({
-            url: `/object_6/records?filters=[{"field":"field_307", "operator":"is", "value":"${this.email}"}]`,
-            method: "get"
-        });
+
         const accountExists = axiosInstance({
-            url: `/object_17/records?filters=[{"field":"field_128", "operator":"is", "value":"${this.email}"}]`,
+            url: `/object_17/records?filters=[{"field":"field_307", "operator":"is", "value":"${this.email}"}]`,
             method: "get"
         });
 
-        axios.all([subscribed, accountExists])
-            .then(axios.spread((subsc, acct) => {
+        accountExists.then((acct) => {
                 Events.emit("subscription_found", acct.data.records[ 0 ]);
-            }))
+            })
             .catch((error) => {
                 console.log(error);
             });
@@ -101,6 +113,7 @@ const memberController = {
      * @param  {Function} callback [description]
      * @returns {Promise}            [description]
      */
+
     updateMember (id, data, callback) {
         const request = axiosInstance({
             url: `/object_17/records/${ id}`,
@@ -128,6 +141,7 @@ const memberController = {
      * @memberOf memberController
      * @returns {String}
      */
+
     getQueryParametersByName (name, url) {
         if (!url) {
             url = window.location.href;

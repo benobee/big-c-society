@@ -8,6 +8,7 @@
     -   [getTopPosition](#gettopposition)
     -   [fixedNav](#fixednav)
 -   [axiosInstance](#axiosinstance)
+-   [Events](#events)
 -   [memberController](#membercontroller)
     -   [init](#init)
     -   [actions](#actions)
@@ -43,6 +44,10 @@ classes to adjust for the fixed nav.
 ## axiosInstance
 
 creates the axios promise
+
+## Events
+
+Pub sub pattern event system
 
 ## memberController
 

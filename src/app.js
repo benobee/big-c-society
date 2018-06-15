@@ -1,6 +1,8 @@
 import Scrollmap from "scrollmap";
-import controller from "./core/controller";
+import memberController from "./core/memberController";
 import PubSub from "./core/pubsub";
+import blog from "./components/blog";
+import Vue from "vue";
 
 const Events = new PubSub();
 
@@ -16,7 +18,7 @@ const App = {
      * @memberOf App
      */
     initKnack () {
-        this.memberController = controller.init();
+        this.memberController = memberController.init();
     },
 
     /**
@@ -25,6 +27,7 @@ const App = {
      */
     initSite () {
         this.fixedNav();
+        this.bindBlogComponent();
     },
 
     /**
@@ -52,6 +55,14 @@ const App = {
                 header.classList.remove("scroll-active");
             }
         });
+    },
+
+    bindBlogComponent () {
+        const target = document.getElementById("big-c-blog-list");
+
+        if (target) {
+            this.blog = new Vue(blog);
+        }
     }
 };
 

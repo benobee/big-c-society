@@ -1,0 +1,22 @@
+<div class="app" v-bind:class="{ loaded: lifecycle.appLoaded, loading: isLoading }">
+    <div class="nav-filters">
+        <div class="nav-item" v-on:click="resetFilters">All</div>
+        <div class="nav-item" v-for="filter in categories" v-on:click="setFilter(filter)" v-bind:class="{active: filter.isActive}">{{filter.name}}</div>
+    </div>
+    <dciv class="Blog-List-wrapper collection-list">
+        <transition-group name="list-complete" tag="a" class="Blog-List">
+            <a class="Blog-List-item" :href="item.fullUrl" v-for="item in items" :data-item-id="item.id" :key="item.id" :class="item | applyItemClasses">
+                <div class="Blog-List-item-image">
+                    <img :src="item.assetUrl">
+                </div>
+                <div class="BlogList-item-title" data-content-field="title">{{item.title}}</div>
+                <div class="meta">
+                    <span class="meta-item--categories">{{item.categories.join(", ")}}</span>
+                </div>
+            </a>
+        </transition-group>
+        <div class="loader-bottom">
+            <div class="spinner"></div>
+        </div>
+    </dciv>
+</div>

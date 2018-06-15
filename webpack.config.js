@@ -132,6 +132,19 @@ rules.push(CSSRules);
 
 /*********************/
 
+// @rule: HTML
+const HTMLRules = {
+    test: /\.html$/,
+    exclude: /node_modules/,
+    use: {
+        loader: 'html-loader'
+    }
+}
+
+rules.push(HTMLRules);
+
+/*********************/
+
 // @rule: json
 const JSONRules = {
     test: /\.json$/,

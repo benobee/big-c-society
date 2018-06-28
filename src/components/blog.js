@@ -7,7 +7,7 @@ const events = new PubSub();
 const collection = {
     el: "#big-c-blog-list",
     template: html,
-    data () {
+    data() {
         return {
             currentFilter: "All",
             fullUrl: "/big-c-news-and-events",
@@ -31,8 +31,7 @@ const collection = {
          * @name applyItemClasses
          * @private
          */
-
-        applyItemClasses (item) {
+        applyItemClasses(item) {
             const slugify = (value) => {
                 return value.toString().toLowerCase()
                     .replace(/\s+/g, "-")
@@ -76,18 +75,17 @@ const collection = {
          * @returns {String}
          * @private
          */
-
-        suggestedColor (colorData) {
+        suggestedColor(colorData) {
             return {
                 backgroundColor: `#${colorData.suggestedBgColor}`
             };
         },
-        formatSmall (img) {
+        formatSmall(img) {
             return `${img }?format=300w`;
         }
     },
     computed: {
-        isScrolling () {
+        isScrolling() {
             let scrolling = false;
 
             if (this.scrollHeight < this.listTop) {
@@ -96,7 +94,7 @@ const collection = {
 
             return scrolling;
         },
-        appLoaded () {
+        appLoaded() {
             let className = "";
 
             if (this.lifecycle.appLoaded) {
@@ -107,6 +105,7 @@ const collection = {
         }
     },
     methods: {
+
         /**
          * The state of the scroll and items will be
          * stored in the history state for a smoother
@@ -116,21 +115,19 @@ const collection = {
          * @name storeListState
          * @private
          */
-
-        storeListState (options) {
+        storeListState(options) {
             options.scrollRestoration = "auto";
             history.pushState(options, null, location.pathname + location.search);
         },
-        bindScrollEvents () {
+        bindScrollEvents() {
             window.addEventListener("load", this.executeScrollFunctions);
             window.addEventListener("scroll", this.executeScrollFunctions);
         },
-        cleanupScrollEvents () {
+        cleanupScrollEvents() {
             window.removeEventListener("load", this.executeScrollFunctions);
             window.removeEventListener("scroll", this.executeScrollFunctions);
         },
-
-        mapFilters (array) {
+        mapFilters(array) {
             array = array.map((item) => {
                 return {
                     isActive: false,
@@ -148,8 +145,7 @@ const collection = {
          * @name executeScrollFunctions
          * @private
          */
-
-        executeScrollFunctions () {
+        executeScrollFunctions() {
             const grid = this.$el.querySelector(".collection-list");
             const height = window.innerHeight;
             const domRect = grid.getBoundingClientRect();
@@ -161,14 +157,14 @@ const collection = {
             //show next page of pagination list
             this.appendItems(triggerAmount);
         },
-        scrollTo (scrollY) {
+        scrollTo(scrollY) {
             window.scroll({
                 top: scrollY,
                 left: 0
             });
         },
 
-        paginate (array) {
+        paginate(array) {
             //limit the active items list based on page index to allow for
             //infinite scroll and append
             array = array.splice(0, this.pagination.currentIndex + this.pagination.pageLimit);
@@ -185,8 +181,7 @@ const collection = {
          * @name appendItems
          * @private
          */
-
-        appendItems (triggerAmount) {
+        appendItems(triggerAmount) {
             if (triggerAmount > 0 && !this.scrollBottom && this.pagination) {
                 const request = axios.get(this.pagination.nextPageUrl, {
                     headers: {
@@ -216,7 +211,7 @@ const collection = {
             }
         },
 
-        filterByCategory (filter) {
+        filterByCategory(filter) {
             this.pagination = false;
             const params = {
                 format: "json",
@@ -258,8 +253,7 @@ const collection = {
          * @name listenToHistoryLesson
          * @private
          */
-
-        listenToHistoryLesson () {
+        listenToHistoryLesson() {
             window.addEventListener("popstate", (e) => {
                 if (e.state) {
                     events.emit("filter-set", { filterName: e.state.currentFilter, popstate: true });
@@ -276,14 +270,13 @@ const collection = {
          * @returns {String}
          * @private
          */
-
-        getUrlParameter (name) {
+        getUrlParameter(name) {
             name = name.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
 
             const regex = new RegExp(`[\\?&]${ name }=([^&#]*)`);
             const results = regex.exec(location.search);
 
-            return results === null ? "" : decodeURIComponent(results[ 1 ].replace(/\+/g, " "));
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
         },
 
         /**
@@ -294,8 +287,7 @@ const collection = {
          * @name checkUrlForFilter
          * @private
          */
-
-        checkUrlForFilter () {
+        checkUrlForFilter() {
             const search = this.getUrlParameter("category");
 
             if (search) {
@@ -309,26 +301,24 @@ const collection = {
                 });
             }
         },
-
-        encodeShareUrl (value) {
+        encodeShareUrl(value) {
             return `${location.pathname}?category=${encodeURIComponent(value)}`;
         },
-
-        setFilter (filter) {
+        setFilter(filter) {
             this.categories.forEach((item) => {
                 item.isActive = false;
             });
             filter.isActive = true;
             events.emit("filter-set", { filterName: filter.name });
         },
-        resetFilters () {
+        resetFilters() {
             this.categories.forEach((item) => {
                 item.isActive = false;
             });
             events.emit("filter-set", { filterName: "All" });
         }
     },
-    mounted () {
+    mounted() {
         this.checkUrlForFilter();
         this.listenToHistoryLesson();
         events.on("filter-set", (e) => {

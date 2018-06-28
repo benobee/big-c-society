@@ -28,7 +28,7 @@ const memberController = {
      * @returns {Object}
      */
 
-    init() {
+    init () {
         this.email = this.getQueryParametersByName("email");
         this.subscriptions();
         this.actions();
@@ -42,7 +42,7 @@ const memberController = {
      * @memberOf memberController
      */
 
-    actions() {
+    actions () {
         const registerAccount = document.getElementById("collection-5ab4283a70a6ad6a9cade23f");
 
         if (registerAccount && this.email) {
@@ -56,12 +56,12 @@ const memberController = {
      * @memberOf memberController
      */
 
-    subscriptions() {
+    subscriptions () {
         Events.on("query_params_found", () => {
             // find a member in the database from query param email
             this.checkIfSubscribed();
         });
-        Events.on("subscription_found", (data) => {
+        Events.on("subscription_found", () => {
             const knackContainer = document.querySelector("#knack-dist_5");
 
             knackContainer.classList.add("subscription-found");
@@ -88,7 +88,7 @@ const memberController = {
      * @memberOf memberController
      */
 
-    checkIfSubscribed() {
+    checkIfSubscribed () {
 
         const accountExists = axiosInstance({
             url: `/object_17/records?filters=[{"field":"field_307", "operator":"is", "value":"${this.email}"}]`,
@@ -96,7 +96,7 @@ const memberController = {
         });
 
         accountExists.then((acct) => {
-                Events.emit("subscription_found", acct.data.records[0]);
+                Events.emit("subscription_found", acct.data.records[ 0 ]);
             })
             .catch((error) => {
                 console.log(error);
@@ -111,7 +111,7 @@ const memberController = {
      * @returns {Promise}            [description]
      */
 
-    updateMember(id, data, callback) {
+    updateMember (id, data, callback) {
         const request = axiosInstance({
             url: `/object_17/records/${ id}`,
             method: "put",
@@ -139,7 +139,7 @@ const memberController = {
      * @returns {String}
      */
 
-    getQueryParametersByName(name, url) {
+    getQueryParametersByName (name, url) {
         if (!url) {
             url = window.location.href;
         }
@@ -150,10 +150,10 @@ const memberController = {
         if (!results) {
             return null;
         }
-        if (!results[2]) {
+        if (!results[ 2 ]) {
             return "";
         }
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
+        return decodeURIComponent(results[ 2 ].replace(/\+/g, " "));
     }
 };
 

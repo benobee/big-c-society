@@ -65,7 +65,6 @@ const memberController = {
             const knackContainer = document.querySelector("#knack-dist_5");
 
             knackContainer.classList.add("subscription-found");
-
             const password = document.getElementById("password");
             const email = document.getElementById("email");
             const button = document.querySelector(".kn-button.is-primary");

@@ -21,42 +21,36 @@ const Events = new PubSub();
  */
 
 const memberController = {
-
     /**
      * Initialize the controller
      * @memberOf memberController
      * @returns {Object}
      */
-
-    init () {
+    init() {
         this.email = this.getQueryParametersByName("email");
         this.subscriptions();
         this.actions();
         return this;
     },
-
     /**
      * Looks for the register account page. If there are
      * paramaters in the email then it will emit a
      * pub sub event
      * @memberOf memberController
      */
-
-    actions () {
+    actions() {
         const registerAccount = document.getElementById("collection-5ab4283a70a6ad6a9cade23f");
 
         if (registerAccount && this.email) {
             Events.emit("query_params_found", this.email);
         }
     },
-
     /**
      * All the subcriptions for the app. Executed
      * like this for organization.
      * @memberOf memberController
      */
-
-    subscriptions () {
+    subscriptions() {
         Events.on("query_params_found", () => {
             // find a member in the database from query param email
             this.checkIfSubscribed();
@@ -78,7 +72,6 @@ const memberController = {
             button.classList.add("show");
         });
     },
-
     /**
      * Looks at the search query in the url to
      * extract an email. This is tested in in two ways.
@@ -86,22 +79,19 @@ const memberController = {
      * as if the account exists at all.
      * @memberOf memberController
      */
-
-    checkIfSubscribed () {
-
+    checkIfSubscribed() {
         const accountExists = axiosInstance({
             url: `/object_17/records?filters=[{"field":"field_307", "operator":"is", "value":"${this.email}"}]`,
             method: "get"
         });
 
         accountExists.then((acct) => {
-                Events.emit("subscription_found", acct.data.records[ 0 ]);
+                Events.emit("subscription_found", acct.data.records[0]);
             })
             .catch((error) => {
                 console.log(error);
             });
     },
-
     /*
      * Updates the member based on certain criteria
      * @param  {String]}   id       [description]
@@ -109,8 +99,7 @@ const memberController = {
      * @param  {Function} callback [description]
      * @returns {Promise}            [description]
      */
-
-    updateMember (id, data, callback) {
+    updateMember(id, data, callback) {
         const request = axiosInstance({
             url: `/object_17/records/${ id}`,
             method: "put",
@@ -128,7 +117,6 @@ const memberController = {
 
         return request;
     },
-
     /*
      * Looks at the search query and a key
      * and return a value based on that key.
@@ -137,8 +125,7 @@ const memberController = {
      * @memberOf memberController
      * @returns {String}
      */
-
-    getQueryParametersByName (name, url) {
+    getQueryParametersByName(name, url) {
         if (!url) {
             url = window.location.href;
         }
@@ -149,10 +136,10 @@ const memberController = {
         if (!results) {
             return null;
         }
-        if (!results[ 2 ]) {
+        if (!results[2]) {
             return "";
         }
-        return decodeURIComponent(results[ 2 ].replace(/\+/g, " "));
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 };
 

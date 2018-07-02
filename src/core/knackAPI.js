@@ -5,12 +5,11 @@ import axios from "axios";
  * @type {Object}
  */
 const KnackAPI = {
-
     /**
      * returns a promise from axios
      * @returns {Promise}
      */
-    createInstance () {
+    createInstance() {
         return axios.create({
             baseURL: "https://api.knack.com/v1/objects/",
             timeout: 8000,

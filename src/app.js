@@ -12,37 +12,33 @@ const Events = new PubSub();
  * @type {Object}
  */
 const App = {
-
     /**
      * Initalizes specific methods for Knack
      * @memberOf App
      */
-    initKnack () {
+    initKnack() {
         this.memberController = memberController.init();
     },
-
     /**
      * Initializes specific methods for the Squarespace site.
      * @memberOf App
      */
-    initSite () {
+    initSite() {
         this.fixedNav();
         this.bindBlogComponent();
     },
-
     /**
      * used in conjuction with scroll events
      * @returns {String} returns the position of the body
      */
-    getTopPosition () {
+    getTopPosition() {
         return document.querySelector("body").getBoundingClientRect().top;
     },
-
     /**
      * Used for binding scroll events and adding or removing
      * classes to adjust for the fixed nav.
      */
-    fixedNav () {
+    fixedNav() {
         const header = document.querySelector(".Header-inner--bottom");
         let top = this.getTopPosition();
 
@@ -56,8 +52,7 @@ const App = {
             }
         });
     },
-
-    bindBlogComponent () {
+    bindBlogComponent() {
         const target = document.getElementById("big-c-blog-list");
 
         if (target) {
